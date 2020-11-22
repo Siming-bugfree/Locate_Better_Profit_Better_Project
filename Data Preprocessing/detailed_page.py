@@ -25,11 +25,11 @@ if os.path.exists('result.xls'):
     ws=wb.get_sheet(0)
     result=result.sheet_by_index(0)
     for i in range(1,result.nrows):
-        exist_urls.append(result.cell(i,9).value)
+        exist_urls.append(result.cell(i,11).value)
 else:
     wb = xlwt.Workbook()
     ws = wb.add_sheet('result')
-    col_names=['name','geo','lat','lng','avg_rating','review_count','det_rating','cuisine','meal','url']
+    col_names=['name','geo','lat','lng','avg_rating','review_count','det_rating','cuisine','meal','pricerange','url']
     for i in range(len(col_names)):
         ws.write(0, i, col_names[i])
     wb.save('result.xls')
@@ -40,7 +40,7 @@ end_index=7000
 for url_index in range(start_index,end_index):
     if urls[url_index] in exist_urls:
         continue
-    time.sleep(random.randint(15,30))
+    time.sleep(random.randint(5,15))
     print(url_index)
     print(urls[url_index])
     response=requests.get(urls[url_index])
@@ -80,7 +80,9 @@ for url_index in range(start_index,end_index):
     for item in meal_list:
         meal.append(item['tagValue'])
     ws.write(url_index, 8, str(meal))
-    ws.write(url_index, 9, urls[url_index])
+    ws.write(url_index, 9, detail['priceRange']['tags'][0]['tagValue'])
+    ws.write(url_index, 10, data['detailCard']['numericalPrice'])
+    ws.write(url_index, 11, urls[url_index])
     wb.save('result.xls')
 
 wb.save('result.xls')
