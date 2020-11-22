@@ -29,7 +29,7 @@ if os.path.exists('result.xls'):
 else:
     wb = xlwt.Workbook()
     ws = wb.add_sheet('result')
-    col_names=['name','geo','lat','lng','avg_rating','review_count','det_rating','cuisine','meal','pricerange','url']
+    col_names=['name','geo','lat','lng','avg_rating','review_count','det_rating','cuisine','meal','pricerange','price','url']
     for i in range(len(col_names)):
         ws.write(0, i, col_names[i])
     wb.save('result.xls')
