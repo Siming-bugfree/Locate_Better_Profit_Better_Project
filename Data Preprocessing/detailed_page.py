@@ -8,6 +8,7 @@ import json
 import time 
 import random
 import os
+import datetime 
 
 
 #Read urls
@@ -36,14 +37,17 @@ else:
 
 #Start 
 start_index=1 #skip the title of list urls
-end_index=7000 
+end_index=len(urls) 
 for url_index in range(start_index,end_index):
+    print('finished')
     if urls[url_index] in exist_urls:
         continue
-    time.sleep(random.randint(5,15))
+    time.sleep(random.randint(2,3))
     print(url_index)
     print(urls[url_index])
+    print(datetime.datetime.now())
     response=requests.get(urls[url_index])
+    print('requested')
     html=response.text
     # print(html)
     soup=BeautifulSoup(html,'lxml')
@@ -80,7 +84,8 @@ for url_index in range(start_index,end_index):
     for item in meal_list:
         meal.append(item['tagValue'])
     ws.write(url_index, 8, str(meal))
-    ws.write(url_index, 9, detail['priceRange']['tags'][0]['tagValue'])
+    if len(detail['priceRange']['tags'])!=0:
+        ws.write(url_index, 9, detail['priceRange']['tags'][0]['tagValue'])
     ws.write(url_index, 10, data['detailCard']['numericalPrice'])
     ws.write(url_index, 11, urls[url_index])
     wb.save('result.xls')
